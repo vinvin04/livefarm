@@ -8,7 +8,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> listItems = ["1","2","3","4","5"];
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +18,14 @@ class _HomePageState extends State<HomePage> {
         ),
         body: new ListView.builder
           (
-            itemCount: listItems.length,
+            itemCount: 10,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
-
+                selectedItem = index;
+                print("index is "+ index.toString());
+                print("selectedItem is "+ selectedItem.toString());
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => DetailsPage()),
