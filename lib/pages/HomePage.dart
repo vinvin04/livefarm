@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:livefarm/pages/DetailsPage.dart';
 import '../Globals.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,6 +10,28 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  var homePageLoaded = false;
+  initState(){
+    super.initState();
+    debugPrint("##### Init state called");
+    getNames();
+  }
+
+  void getNames() {
+    Firestore.instance.collection('names').getDocuments().then((doc) {
+      var temp = doc.documents;
+      print(temp);
+      for(var t in temp) {
+        print(t.data);
+        names = t.data['names'];
+      }
+      print(names);
+      setState(() {
+        homePageLoaded = true;
+        debugPrint("getdata called");
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,16 +39,16 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text('HomePage'),
         ),
-        body: new ListView.builder
+        body: names.length > 0 ? new ListView.builder
           (
-            itemCount: 10,
+            itemCount: names.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
-                selectedItem = index;
-                print("index is "+ index.toString());
-                print("selectedItem is "+ selectedItem.toString());
+                  selectedItem = index;
+                  // print("index is "+ index.toString());
+                  // print("selectedItem is "+ selectedItem.toString());
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => DetailsPage()),
@@ -34,15 +57,15 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: ListTile(
                   leading:  Icon(
-                      Icons.account_circle,
-                      size: 50,
+                    Icons.account_circle,
+                    size: 50,
                   ),
-                  title: Text(listItems[index]),
+                  title: Text(names[index]),
                   subtitle: Text("tap to view more"),
                 ),
               );
             }
-        )
+        ) : Center(child: CircularProgressIndicator())
     );
   }
 }

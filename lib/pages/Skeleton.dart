@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:livefarm/External/fancy_bottom_navigation.dart';
 import 'package:livefarm/pages/HomePage.dart';
-import 'package:livefarm/pages/AddItem.dart';
+import 'package:livefarm/pages/AddName.dart';
 import 'package:livefarm/pages/Settings.dart';
 
 class Skeleton extends StatefulWidget {
@@ -14,7 +14,7 @@ class _SkeletonState extends State<Skeleton> {
 
   List<Widget> _allPages = [
     HomePage(),
-    AddItemPage(),
+    AddNamePage(),
     Settings(),
   ];
 
